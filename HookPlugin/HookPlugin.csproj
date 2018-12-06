@@ -3,7 +3,7 @@
   <PropertyGroup>
     <DesignerExeDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</DesignerExeDir>
     <ReferenceDllDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</ReferenceDllDir>
-    <PluginDllOutputDir>C:\Users\njpm\AppData\Local\Napa Ltd\plugins\2019.1\MVWerften</PluginDllOutputDir>
+    <PluginDllOutputDir>C:\Users\njpm\AppData\Local\Napa Ltd\plugins\2019.1\Hooks</PluginDllOutputDir>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
