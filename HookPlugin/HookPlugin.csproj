@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <DesignerExeDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</DesignerExeDir>
+    <ReferenceDllDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</ReferenceDllDir>
+    <PluginDllOutputDir>C:\Users\njpm\AppData\Local\Napa Ltd\plugins\2019.1\MVWerften</PluginDllOutputDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1A5F6125-2B3C-4705-87A5-F1C6A97B371E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Napa.Hooks</RootNamespace>
+    <AssemblyName>HookPlugin</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(PluginDllOutputDir)</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(DesignerExeDir)NAPA Designer.exe</StartProgram>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(PluginDllOutputDir)</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(DesignerExeDir)NAPA Designer.exe</StartProgram>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DesignerScripting, Version=18.3.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\work\nfd\Designer\DesignerApp\bin\Debug\Plugins\Napa.Scripting\DesignerScripting.dll</HintPath>
+    </Reference>
+    <Reference Include="NAPA Designer Core">
+      <HintPath>$(ReferenceDllDir)NAPA Designer Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NapaObjectModel">
+      <HintPath>$(ReferenceDllDir)NapaObjectModel.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NfD.Common">
+      <HintPath>$(ReferenceDllDir)NfD.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NfD.Core">
+      <HintPath>$(ReferenceDllDir)NfD.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NfD.UI.Common">
+      <HintPath>$(ReferenceDllDir)NfD.UI.Common.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NfD.UI.Core">
+      <HintPath>$(ReferenceDllDir)NfD.UI.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IHook.cs" />
+    <Compile Include="DesignerHooksExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
