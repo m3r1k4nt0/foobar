@@ -43,6 +43,7 @@
     <Reference Include="DesignerScripting, Version=18.3.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\work\nfd\Designer\DesignerApp\bin\Debug\Plugins\Napa.Scripting\DesignerScripting.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="NAPA Designer Core">
       <HintPath>$(ReferenceDllDir)NAPA Designer Core.dll</HintPath>

@@ -46,7 +46,8 @@ namespace Napa.Hooks {
                     var scriptFiles = Directory.GetFiles(path, "*.cs");
                     foreach (var script in scriptFiles) {
                         scriptName = Path.GetFileName(script);
-                        ScriptEngine.ExecuteFile(script, name);
+                        var hook = ScriptEngine.ExecuteFile<IHook>(script);
+                        hook.Run(name);
                     }
                 } catch(Exception e) {
                     ModalDialog.ShowException(e, "Hook error " + scriptName);
