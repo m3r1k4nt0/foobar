@@ -3,7 +3,7 @@
   <PropertyGroup>
     <DesignerExeDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</DesignerExeDir>
     <ReferenceDllDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</ReferenceDllDir>
-    <PluginDllOutputDir>$(AppData)\Napa Ltd\plugins\2019.1\Hooks</PluginDllOutputDir>
+    <PluginDllOutputDir>$(AppData)\..\Local\Napa Ltd\plugins\2019.1\Hooks</PluginDllOutputDir>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -80,8 +80,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Hooks\AddToSteelModelHook.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Compile Include="IHook.cs" />
     <Compile Include="DesignerHooksExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

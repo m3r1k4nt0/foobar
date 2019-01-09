@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Windows;
-using Napa;
 using Napa.Common.Utils;
 using Napa.Extensions;
 using Napa.Scripting.Core;
@@ -33,25 +28,30 @@ namespace Napa.Hooks {
         }
 
         private void OnObjectEntered(object o, EventArgs args) {
+            
             var name = o.ToString();
             if (name.Contains("_TEMP_")) return;
-            var surfaceObject = Context.CurrentProjectVersion.GeometryManager.GetSurfaceObject(name);
+            var version = Context.CurrentProjectVersion;
+            var surfaceObject = version.GeometryManager.GetSurfaceObject(name);
             if (surfaceObject == null) return;
             string scriptName = "";
             //TODO better way to check that object is just created
             var isNew = DateTime.Now - surfaceObject.Date < TimeSpan.FromSeconds(3);
             if (isNew) {
-                try {
-                    var path = Path.Combine(ProgramUtils.PathToAssembly(Assembly.GetExecutingAssembly()), "Hooks");
-                    var scriptFiles = Directory.GetFiles(path, "*.cs");
-                    foreach (var script in scriptFiles) {
-                        scriptName = Path.GetFileName(script);
-                        var hook = ScriptEngine.ExecuteFile<IHook>(script);
-                        hook.Run(name);
+                //Begin invoke, seems that with big models the Entered event comes too early. 
+                Alfred.MainWindowVM.Designer.Dispatcher.BeginInvoke(new Action(() => {
+                    try {
+                        var path = Path.Combine(ProgramUtils.PathToAssembly(Assembly.GetExecutingAssembly()), "Hooks");
+                        var scriptFiles = Directory.GetFiles(path, "*.cs");
+                        foreach (var script in scriptFiles) {
+                            scriptName = Path.GetFileName(script);
+                            var hook = ScriptEngine.ExecuteFile<IHook>(script);
+                            hook.Run(version, name);
+                        }
+                    } catch (Exception e) {
+                        ModalDialog.ShowException(e, "Hook error " + scriptName);
                     }
-                } catch(Exception e) {
-                    ModalDialog.ShowException(e, "Hook error " + scriptName);
-                }
+                }));
             }
         }
 
