@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using Napa.Common.Utils;
+using Napa.Drawables;
 using Napa.Extensions;
 using Napa.Scripting.Core;
 using Napa.UI.Common.Dialogs;
@@ -37,7 +38,7 @@ namespace Napa.Hooks {
             string scriptName = "";
             //TODO better way to check that object is just created
             var isNew = DateTime.Now - surfaceObject.Date < TimeSpan.FromSeconds(3);
-            if (isNew) {
+            if (isNew) { 
                 //Begin invoke, seems that with big models the Entered event comes too early. 
                 Alfred.MainWindowVM.Designer.Dispatcher.BeginInvoke(new Action(() => {
                     try {

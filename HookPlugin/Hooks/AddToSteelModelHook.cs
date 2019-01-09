@@ -8,6 +8,7 @@ using Napa.Core.Geometry;
 using Napa.Core.Project;
 using Napa.TableProcessing;
 using Napa.Gui.ViewModels;
+using Napa.Drawables;
 
 namespace Napa.Hooks.Hooks {
     public class AddToSteelModelHook : IHook {
@@ -33,7 +34,7 @@ namespace Napa.Hooks.Hooks {
     }
 
     public class ArragementHelper {
-
+        
         public ISurfaceObject SurfaceObject { get; private set; }
 
         public ArragementHelper(ISurfaceObject so) {
@@ -41,10 +42,11 @@ namespace Napa.Hooks.Hooks {
         }
 
         public bool AssingStructureType(IProjectVersion version) {
-            var arr = GetArrangement(version);
-            if (arr == null)
-                return false;
-            return arr.TrySetType(SurfaceObject.Name, GetStructureType());
+            var dMgr = Alfred.GraphicsService.DrawableManager.GetFromCache(name);
+            var geom = dMgr.GetFromCache(name) as CompositeGeometry;
+            if (geom == null)
+                return;
+            geom.StructureType = GetStructureType();
         }
 
         public bool AssignLabels(IProjectVersion version) {
@@ -139,7 +141,7 @@ namespace Napa.Hooks.Hooks {
                 return Napa.Alfred.MainWindowVM.ArrangementBrowserVM.SteelObjectBrowserViewModel;
             }
         }
-
+       
         public static void AddItems(IProjectVersion version, IEnumerable<string> path, string[] items) {
             var vm = BrowserVM;
             var node = GetNode(version, vm, vm.ActualRoot, path);
