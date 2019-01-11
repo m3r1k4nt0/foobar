@@ -247,7 +247,7 @@ namespace Napa.Hooks.Hooks {
                     Max = ShipCoordinate.Create(r.GetStringValue("ULIMIT")),
                     Index = r.GetStringValue("NR")
                 })
-                .OrderBy(mzv => mzv.Name)
+                .OrderByDescending(mzv => mzv.Name)
                 .ToList();
         }
     }
