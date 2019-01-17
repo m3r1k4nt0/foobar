@@ -40,7 +40,7 @@ namespace Napa.Hooks {
             var isNew = DateTime.Now - surfaceObject.Date < TimeSpan.FromSeconds(3);
             if (isNew) { 
                 //Begin invoke, seems that with big models the Entered event comes too early. 
-                Alfred.MainWindowVM.Designer.Dispatcher.BeginInvoke(new Action(() => {
+                Alfred.ModelingWorkspaceVM.Designer.Dispatcher.BeginInvoke(new Action(() => {
                     try {
                         var path = Path.Combine(ProgramUtils.PathToAssembly(Assembly.GetExecutingAssembly()), "Hooks");
                         var scriptFiles = Directory.GetFiles(path, "*.cs");

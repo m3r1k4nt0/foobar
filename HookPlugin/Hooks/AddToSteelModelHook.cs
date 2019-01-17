@@ -138,7 +138,7 @@ namespace Napa.Hooks.Hooks {
 
         public static NapaArrangementBrowserViewModel BrowserVM {
             get {
-                return Napa.Alfred.MainWindowVM.ArrangementBrowserVM.SteelObjectBrowserViewModel;
+                return Napa.Alfred.ModelingWorkspaceVM.ArrangementBrowserVM.SteelObjectBrowserViewModel;
             }
         }
        
