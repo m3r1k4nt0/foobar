@@ -42,11 +42,12 @@ namespace Napa.Hooks.Hooks {
         }
 
         public bool AssingStructureType(IProjectVersion version) {
-            var dMgr = Alfred.GraphicsService.DrawableManager.GetFromCache(name);
-            var geom = dMgr.GetFromCache(name) as CompositeGeometry;
+            var dMgr = Alfred.GraphicsService.DrawableManager;
+            var geom = dMgr.GetFromCache(SurfaceObject.Name) as CompositeGeometry;
             if (geom == null)
-                return;
+                return false;
             geom.StructureType = GetStructureType();
+            return true;
         }
 
         public bool AssignLabels(IProjectVersion version) {
