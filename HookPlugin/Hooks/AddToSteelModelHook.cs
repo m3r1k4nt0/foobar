@@ -74,7 +74,7 @@ namespace Napa.Hooks.Hooks {
         public string[] GetArrangementPath(IProjectVersion version) {
             var mvz = GetMainVerticalZone(version);
             var deckZone = GetDeckZone(version, mvz);
-            return new String[] {
+            return new[] {
                 "STR*STEEL",
                 mvz.GetArrangementName(),
                 deckZone.GetArrangementName(mvz),
@@ -105,12 +105,17 @@ namespace Napa.Hooks.Hooks {
         }
 
         private string GetStructureType() {
-            return GetGenericStructureType() == "TBH" ? "1-TBH_1" : "0-LBH_1";
+            var genericStructureType = GetGenericStructureType();
+            if (genericStructureType == "TBH") return "1-TBH_1";
+            if (genericStructureType == "LBH") return "0-LBH_1";
+            return "3-DECK_1";
         }
 
         private string GetGenericStructureType() {
-            var b = SurfaceObject.BoundingBox;
-            return b.YLength > b.XLength ? "TBH" : "LBH";
+            var orientation = SurfaceObject.BoundingBox.GetMinDimensionAxis();
+            if (orientation == Axis.X) return "TBH";
+            if (orientation == Axis.Y) return "LBH";
+            return "DK";
         }
 
         private DeckZone GetDeckZone(IProjectVersion version, MainVerticalZone mvz) {
@@ -248,7 +253,7 @@ namespace Napa.Hooks.Hooks {
                     Max = ShipCoordinate.Create(r.GetStringValue("ULIMIT")),
                     Index = r.GetStringValue("NR")
                 })
-                .OrderByDescending(mzv => mzv.Name)
+                .OrderByDescending(mvz => mvz.Name)
                 .ToList();
         }
     }
