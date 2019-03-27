@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Napa.Core.Geometry;
 using Napa.Core.Project;
+using Napa.Core.Steel;
 using Napa.TableProcessing;
 using Napa.Gui.ViewModels;
 using Napa.Drawables;
@@ -34,7 +36,10 @@ namespace Napa.Hooks.Hooks {
     }
 
     public class ArragementHelper {
-        
+
+        private static readonly Regex REF_OBJECT_REGEX
+            = new Regex(@"^REF\s*,?\s+(?<NAME>[^\n\s,;]+)\s*$", RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+
         public ISurfaceObject SurfaceObject { get; private set; }
 
         public ArragementHelper(ISurfaceObject so) {
@@ -44,9 +49,17 @@ namespace Napa.Hooks.Hooks {
         public bool AssingStructureType(IProjectVersion version) {
             var dMgr = Alfred.GraphicsService.DrawableManager;
             var geom = dMgr.GetFromCache(SurfaceObject.Name) as CompositeGeometry;
-            if (geom == null)
-                return false;
-            geom.StructureType = GetStructureType();
+            if (geom == null) return false;
+
+            string structureType = null;
+            string originalObjectName;
+            if (IsReflectedObject(out originalObjectName)) {
+                var mainObject = version.SteelManager.DefaultModel.GetMainObjectByName(originalObjectName);
+                if (mainObject != null && mainObject.StructureType != null)
+                    structureType = mainObject.StructureType.Name;
+            }
+
+            geom.StructureType = structureType ?? GetStructureType();
             return true;
         }
 
@@ -138,6 +151,14 @@ namespace Napa.Hooks.Hooks {
                 .GetMainVerticalZones(version)
                 .FirstOrDefault(z => z.Range.IsIncluding(x, 0.01));
         }
+
+        private bool IsReflectedObject(out string originalObjectName) {
+            originalObjectName = null;
+            var match = REF_OBJECT_REGEX.Match(SurfaceObject.Definition);
+            if (!match.Success) return false;
+            originalObjectName = match.Groups["NAME"].ToString().Trim();
+            return true;
+        }
     }
 
     public static class ObjectBrowserHelper {
@@ -147,7 +168,7 @@ namespace Napa.Hooks.Hooks {
                 return Napa.Alfred.ModelingWorkspaceVM.ArrangementBrowserVM.SteelObjectBrowserViewModel;
             }
         }
-       
+
         public static void AddItems(IProjectVersion version, IEnumerable<string> path, string[] items) {
             var vm = BrowserVM;
             var node = GetNode(version, vm, vm.ActualRoot, path);
