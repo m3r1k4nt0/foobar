@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using Napa.Commands;
 using Napa.Common.Utils;
-using Napa.Drawables;
 using Napa.Extensions;
 using Napa.Scripting.Core;
 using Napa.UI.Common.Dialogs;
@@ -16,11 +16,21 @@ namespace Napa.Hooks {
     [Extension("DesignerHooks")]
     public class DesignerHooksExtension : IExtension {
 
+        private bool IsHookEnabled { get; set; }
+
         private IExtensionContext Context { get; set; }
 
         public void Initialize(IExtensionContext context) {
+            IsHookEnabled = true;
             Context = context;
             Context.ProjectEventSource.ProjectOpened += OnProjectOpened;
+
+            Context.UIService.AddPromptCommand(new CommandInputItem(
+                new PromptDelegateCommand("HOOKS OFF", () => IsHookEnabled = false, () => IsHookEnabled, 
+                "HOOKS OFF", "Switch OFF the automatic execution of custom \"hook\" scripts after creating new geometric objects."), null));
+            Context.UIService.AddPromptCommand(new CommandInputItem(
+                new PromptDelegateCommand("HOOKS ON", () => IsHookEnabled = true, () => !IsHookEnabled,
+                "HOOKS ON", "Switch ON the automatic execution of custom \"hook\" scripts after creating new geometric objects."), null));
         }
 
         public void Dispose() {
@@ -29,7 +39,8 @@ namespace Napa.Hooks {
         }
 
         private void OnObjectEntered(object o, EventArgs args) {
-            
+            if (!IsHookEnabled) return;
+
             var name = o.ToString();
             if (name.Contains("_TEMP_")) return;
             var version = Context.CurrentProjectVersion;
