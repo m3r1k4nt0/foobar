@@ -3,7 +3,7 @@
   <PropertyGroup>
     <DesignerExeDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</DesignerExeDir>
     <ReferenceDllDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</ReferenceDllDir>
-    <PluginDllOutputDir>$(AppData)\..\Local\Napa Ltd\plugins\2019.1\Hooks</PluginDllOutputDir>
+    <PluginDllOutputDir>$(AppData)\..\Local\Napa Ltd\plugins\2019.2\Hooks</PluginDllOutputDir>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -42,7 +42,7 @@
   <ItemGroup>
     <Reference Include="DesignerScripting, Version=18.3.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\work\nfd\Designer\DesignerApp\bin\Debug\Plugins\Napa.Scripting\DesignerScripting.dll</HintPath>
+      <HintPath>$(ReferenceDllDir)Plugins\Napa.Scripting\DesignerScripting.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="NAPA Designer Core">
