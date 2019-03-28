@@ -83,6 +83,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ScriptUtils\ArrangementHelper.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ScriptUtils\ObjectBrowserHelper.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Hooks\AddToSteelModelHook.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
