@@ -27,15 +27,32 @@ namespace Napa.Hooks {
 
             Context.UIService.AddPromptCommand(new CommandInputItem(
                 new PromptDelegateCommand("HOOKS OFF", () => IsHookEnabled = false, () => IsHookEnabled, 
-                "HOOKS OFF", "Switch OFF the automatic execution of custom \"hook\" scripts after creating new geometric objects."), null));
+                "-HOOKS OFF", "Switch OFF the automatic execution of custom \"hook\" scripts after creating new geometric objects."), null));
             Context.UIService.AddPromptCommand(new CommandInputItem(
                 new PromptDelegateCommand("HOOKS ON", () => IsHookEnabled = true, () => !IsHookEnabled,
-                "HOOKS ON", "Switch ON the automatic execution of custom \"hook\" scripts after creating new geometric objects."), null));
+                "-HOOKS ON", "Switch ON the automatic execution of custom \"hook\" scripts after creating new geometric objects."), null));
+            PopulateCustomCommands();
         }
 
         public void Dispose() {
             if (Context.CurrentProjectVersion == null) return;
             Context.CurrentProjectVersion.GeometryManager.GeometricObjectEntered -= OnObjectEntered;
+        }
+
+        private void PopulateCustomCommands() {
+            var path = Path.Combine(ProgramUtils.PathToAssembly(Assembly.GetExecutingAssembly()), "Scripts");
+            var scriptFiles = Directory.GetFiles(path, "*.cs");
+            foreach (var script in scriptFiles) {
+                var scriptName = Path.GetFileName(script);
+                Context.UIService.AddPromptCommand(new CommandInputItem(
+                    new PromptDelegateCommand(scriptName, () => {
+                        try {
+                            ScriptEngine.ExecuteFile(script);
+                        } catch (Exception e) {
+                            ModalDialog.ShowException(e, e.GetType().ToString());
+                        }
+                    }, "-" + scriptName), null));
+            }
         }
 
         private void OnObjectEntered(object o, EventArgs args) {

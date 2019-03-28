@@ -83,6 +83,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Scripts\ChangeToPillarObject.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ScriptUtils\ArrangementHelper.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
