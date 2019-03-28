@@ -24,6 +24,55 @@ namespace Napa.Hooks.ScriptUtils {
             AddDrawablesToNode(vm, node, items);
         }
 
+        public static void RemoveItems(IProjectVersion version, string[] items) {
+            foreach (var name in items) {
+                TearDownComposite(name);
+                var steelArr = version.DefaultStructureArrangement;
+                var subArrs = steelArr.ElementaryArrangements;
+                var arr = subArrs.FirstOrDefault(a => a.Names.Contains(name));
+                if (arr == null) continue;
+                arr.Remove(name);
+
+                var itemVM = FindItemByName(BrowserVM.ActualRoot, name);
+                if (itemVM == null) continue;
+                var nodeVM = itemVM.Parent;
+                var method = nodeVM.GetType().GetMethod("RemoveChild", BindingFlags.NonPublic | BindingFlags.Instance);
+                method.Invoke(nodeVM, new object[] { itemVM });
+                ((ObjectBrowserNodeViewModel)nodeVM).NotifyCountChanged();
+            }
+        }
+
+        private static void TearDownComposite(string name) {
+            var drawableManager = Napa.Alfred.GraphicsService.DrawableManager;
+            var drawable = drawableManager.Get(name) as IMainGeometry;
+            if (!(drawable is CompositeGeometry)) return;
+
+            var composite = drawable as CompositeGeometry;
+            var visible = composite.Visible;
+            drawableManager.DisposeDrawable(composite);
+            var geometry = drawableManager.Get(name) as Napa.Graphics.Drawables.IGeometry;
+            if (geometry != null && visible) geometry.Show();
+        }
+
+        private static ObjectBrowserItemViewModel FindItemByName(ObjectBrowserItemViewModel item, string name) {
+            var res1 = GetChildByName(item, name);
+            if (res1 != null) return res1;
+
+            var children = GetChildren(item);
+            foreach (var i in children) {
+                var res2 = FindItemByName(i.Value, name);
+                if (res2 != null) return res2;
+            }
+            return null;
+        }
+
+        private static ObjectBrowserItemViewModel GetChildByName(ObjectBrowserItemViewModel item, string name) {
+            var children = GetChildren(item);
+            ObjectBrowserItemViewModel child;
+            children.TryGetValue(name, out child);
+            return child;
+        }
+
         private static ObjectBrowserNodeViewModel GetNode(IProjectVersion version, NapaArrangementBrowserViewModel vm,
                 ObjectBrowserNodeViewModel root, IEnumerable<string> path) {
 

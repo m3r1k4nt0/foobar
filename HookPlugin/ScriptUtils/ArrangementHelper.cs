@@ -22,11 +22,16 @@ namespace Napa.Hooks.ScriptUtils {
             SurfaceObject = so;
         }
 
-        public bool AssingStructureType(IProjectVersion version) {
+        public static bool AssignStructureType(IProjectVersion version, string objectName, string structureType) {
             var dMgr = Alfred.GraphicsService.DrawableManager;
-            var geom = dMgr.GetFromCache(SurfaceObject.Name) as CompositeGeometry;
+            var geom = dMgr.GetFromCache(objectName) as CompositeGeometry;
             if (geom == null) return false;
 
+            geom.StructureType = structureType;
+            return true;
+        }
+
+        public bool AssingStructureType(IProjectVersion version) {
             string structureType = null;
             string originalObjectName;
             if (IsReflectedObject(out originalObjectName)) {
@@ -34,9 +39,7 @@ namespace Napa.Hooks.ScriptUtils {
                 if (mainObject != null && mainObject.StructureType != null)
                     structureType = mainObject.StructureType.Name;
             }
-
-            geom.StructureType = structureType ?? GetStructureType();
-            return true;
+            return AssignStrucutreType(version, SurfaceObject.Name, structureType ?? GetStructureType());
         }
 
         public bool AssignLabels(IProjectVersion version) {
