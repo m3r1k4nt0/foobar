@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <DesignerExeDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</DesignerExeDir>
-    <ReferenceDllDir>C:\work\nfd\Designer\DesignerApp\bin\Debug\</ReferenceDllDir>
-    <PluginDllOutputDir>$(AppData)\..\Local\Napa Ltd\plugins\2019.2\Hooks</PluginDllOutputDir>
+    <DesignerExeDir>C:\Program Files\NAPA Designer\2020.2\bin\</DesignerExeDir>
+    <ReferenceDllDir>C:\Program Files\NAPA Designer\2020.2\bin\</ReferenceDllDir>
+    <PluginDllOutputDir>$(AppData)\..\Local\Napa Ltd\plugins\2020.2\Hooks</PluginDllOutputDir>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -67,6 +67,10 @@
     </Reference>
     <Reference Include="NfD.UI.Core">
       <HintPath>$(ReferenceDllDir)NfD.UI.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+	<Reference Include="NapaDesigner">
+      <HintPath>$(ReferenceDllDir)NapaDesigner.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />

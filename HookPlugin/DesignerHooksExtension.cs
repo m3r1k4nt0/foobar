@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Windows;
 using Napa.Commands;
 using Napa.Common.Utils;
 using Napa.Extensions;
@@ -23,6 +24,7 @@ namespace Napa.Hooks {
         public void Initialize(IExtensionContext context) {
             IsHookEnabled = true;
             Context = context;
+            Context.CurrentProjectVersion.GeometryManager.GeometricObjectEntered += OnObjectEntered;
             Context.ProjectEventSource.ProjectOpened += OnProjectOpened;
 
             Context.UIService.AddPromptCommand(new CommandInputItem(
@@ -66,9 +68,9 @@ namespace Napa.Hooks {
             string scriptName = "";
             //TODO better way to check that object is just created
             var isNew = DateTime.Now - surfaceObject.Date < TimeSpan.FromSeconds(3);
-            if (isNew) { 
+            if (isNew) {
                 //Begin invoke, seems that with big models the Entered event comes too early. 
-                Alfred.ModelingWorkspaceVM.Designer.Dispatcher.BeginInvoke(new Action(() => {
+                Application.Current.MainWindow.Dispatcher.BeginInvoke(new Action(() => {
                     try {
                         var path = Path.Combine(ProgramUtils.PathToAssembly(Assembly.GetExecutingAssembly()), "Hooks");
                         var scriptFiles = Directory.GetFiles(path, "*.cs");
